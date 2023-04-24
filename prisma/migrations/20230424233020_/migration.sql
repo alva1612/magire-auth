@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "State" AS ENUM ('ACTIVE', 'DISABLED', 'DELETED');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
@@ -7,6 +10,7 @@ CREATE TABLE "User" (
     "username" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "state" "State" NOT NULL DEFAULT 'ACTIVE',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

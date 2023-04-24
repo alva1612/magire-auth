@@ -10,15 +10,12 @@
     "test": "echo \"No tests yet...\""
   },
   "dependencies": {
-    "@azure/functions": "4.0.0-alpha.7",
-    "@prisma/client": "4.12.0",
-    "pg": "^8.10.0",
-    "prisma": "^4.12.0"
+    "@prisma/client": "^4.13.0",
+    "prisma": "^4.13.0"
   },
   "devDependencies": {
-    "@types/node": "18.x",
-    "@types/pg": "^8.6.6",
-    "typescript": "4.9.5"
-  },
-  "main": "dist/src/*.js"
+    "@azure/functions": "^3.0.0",
+    "@types/node": "^16.x",
+    "typescript": "^4.0.0"
+  }
 }
