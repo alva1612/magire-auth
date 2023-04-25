@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions"
-import { prisma } from "../maint"
+import { prisma } from "../lib/prisma"
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -11,16 +11,8 @@ const httpTrigger: AzureFunction = async function (
     ? "Hello, " + name + ". This HTTP triggered function executed successfully."
     : "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
 
-  const user = await prisma.user.create({
-    data: {
-      username: "goby",
-      email: "alvaro.guille",
-      password: "test",
-      phone: "987654321",
-      phone_country: "51",
-    },
-  })
-  console.log(user)
+  // const user = await prisma.user.create()
+  // console.log(user)
   context.res = {
     // status: 200, /* Defaults to 200 */
     body: responseMessage,

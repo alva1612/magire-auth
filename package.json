@@ -11,7 +11,10 @@
   },
   "dependencies": {
     "@prisma/client": "^4.13.0",
-    "prisma": "^4.13.0"
+    "class-validator": "^0.14.0",
+    "prisma": "^4.13.0",
+    "reflect-metadata": "^0.1.13",
+    "typedi": "^0.10.0"
   },
   "devDependencies": {
     "@azure/functions": "^3.0.0",
