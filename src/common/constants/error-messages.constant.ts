@@ -2,7 +2,9 @@ export const ErrorMessages = (errors?) => ({
   400: {
     MISSING_BODY: {
       status: 400,
-      message: "No body sent",
+      body: {
+        message: "No body sent",
+      },
     },
     WRONG_BODY: {
       status: 400,

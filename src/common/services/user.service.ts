@@ -10,7 +10,7 @@ export class UserService {
   @Inject()
   private readonly _userRepo: UserRepository
 
-  async create(user: NewUserDto) {
+  async register(user: NewUserDto) {
     const hashedPassword = this._commonService.hashPassword(user.password)
     user.password = hashedPassword
 
