@@ -1,7 +1,7 @@
-import { ClassConstructor, plainToClass } from "class-transformer"
-import { ErrorMessages } from "../constants/error-messages.constant"
-import { validate } from "class-validator"
 import { HttpRequest } from "@azure/functions"
+import { ClassConstructor, plainToClass } from "class-transformer"
+import { validate } from "class-validator"
+import { ErrorMessages } from "../constants/error-messages.constant"
 
 export async function validateBody<T extends object>(
   request: HttpRequest,
