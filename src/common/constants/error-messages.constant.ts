@@ -1,4 +1,4 @@
-export const ErrorMessages = (errors?) => ({
+export const ErrorMessages = (errors?): ErrorCode => ({
   400: {
     MISSING_BODY: {
       status: 400,
@@ -23,3 +23,21 @@ export const ErrorMessages = (errors?) => ({
     },
   },
 })
+
+type ErrorCode = {
+  [code: number]: ErrorType
+}
+
+interface ErrorType {
+  [key: string]: ErrorResponse
+}
+
+interface ErrorResponse {
+  status: number
+  body: ErrorBody
+}
+
+interface ErrorBody {
+  message: string
+  errors?: any
+}
