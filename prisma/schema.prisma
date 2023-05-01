@@ -8,19 +8,51 @@ datasource db {
 }
 
 model User {
-  id            Int      @id @default(autoincrement())
-  email         String   @unique
-  phoneCountry  String
-  phone         String   @unique
-  username      String   @unique
-  password      String
-  createdAt     DateTime @default(now())
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  phoneCountry String
+  phone        String   @unique
+  username     String   @unique
+  password     String
+  createdAt    DateTime @default(now())
 
-  state         State    @default(ACTIVE)
+  state State @default(ACTIVE)
+
+  friendRequestsReceived FriendRequests[] @relation("receiver")
+  friendRequestsSended   FriendRequests[] @relation("sender")
+  LoginAttemps           LoginAttemps[]
+}
+
+model LoginAttemps {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+//MAYBE FOR ANOTHER MICROSERVICE?
+model FriendRequests {
+  id         Int      @default(autoincrement())
+  senderId   Int
+  sender     User     @relation("sender", fields: [senderId], references: [id])
+  receiverId Int
+  receiver   User     @relation("receiver", fields: [receiverId], references: [id])
+  createdAt  DateTime @default(now())
+
+  state RequestState
+
+  @@id([id, senderId, receiverId])
 }
 
 enum State {
   ACTIVE
   DISABLED
   DELETED
+}
+
+enum RequestState {
+  PENDING
+  CANCELED
+  DELETED
+  ACCEPTED
 }
