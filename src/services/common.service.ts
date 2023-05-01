@@ -1,7 +1,7 @@
 import { hashSync } from "bcrypt"
 import { Inject, Service } from "typedi"
-import { ConfigService } from "../../config/services/config.service"
-import { ENV_KEY } from "../../config/constants"
+import { ConfigService } from "./config.service"
+import { ENV_KEY } from "../constants"
 
 @Service()
 export class CommonService {

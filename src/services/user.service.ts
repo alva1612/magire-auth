@@ -1,5 +1,5 @@
 import { Inject, Service } from "typedi"
-import { NewUserDto } from "../../modules/registration/dtos/new-user.dto"
+import { NewUserDto } from "../dtos"
 import { UserRepository } from "../repos"
 import { CommonService } from "./common.service"
 
