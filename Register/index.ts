@@ -12,11 +12,12 @@ export async function httpTrigger(
   req: HttpRequest
 ): Promise<HttpResponse> {
   try {
-    const validationErrors = await validateBody(req, LocalRegistrationDto)
-    if (validationErrors) return validationErrors
+    const validation = await validateBody(req, LocalRegistrationDto)
+    if (validation.status === "error") return validation.errors
 
+    const { body } = validation
     const userService = Container.get(UserService)
-    const createdUser = await userService.register(req.body)
+    const createdUser = await userService.register(body)
 
     const responseBody: ResponseBodyDto = {
       data: createdUser,

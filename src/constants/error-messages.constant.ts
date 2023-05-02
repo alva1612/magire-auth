@@ -1,4 +1,4 @@
-export const ErrorMessages = (errors?): ErrorCode => ({
+export const ErrorMessages = (errors?) /*: ErrorCode */ => ({
   400: {
     MISSING_BODY: {
       status: 400,
@@ -14,6 +14,14 @@ export const ErrorMessages = (errors?): ErrorCode => ({
       },
     },
   },
+  401: {
+    WRONG_LOGIN: {
+      status: 401,
+      body: {
+        message: "Wrong Log In credentials",
+      },
+    },
+  },
   500: {
     UNKNOWN: {
       status: 500,
@@ -24,20 +32,20 @@ export const ErrorMessages = (errors?): ErrorCode => ({
   },
 })
 
-type ErrorCode = {
-  [code: number]: ErrorType
-}
+// type ErrorCode = {
+//   [code: number]: ErrorType
+// }
 
-interface ErrorType {
-  [key: string]: ErrorResponse
-}
+// interface ErrorType {
+//   [key: string]: ErrorResponse
+// }
 
-interface ErrorResponse {
-  status: number
-  body: ErrorBody
-}
+// interface ErrorResponse {
+//   status: number
+//   body: ErrorBody
+// }
 
-interface ErrorBody {
-  message: string
-  errors?: any
-}
+// interface ErrorBody {
+//   message: string
+//   errors?: any
+// }

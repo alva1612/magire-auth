@@ -6,17 +6,24 @@ import { ErrorMessages } from "../src/constants/error-messages.constant"
 import { validateBody } from "../src/helpers"
 import { UserService } from "../src/services"
 import { ResponseBodyDto } from "../src/dtos/response-body.dto"
+import { OperationRes } from "../src/types/common-types.type"
 
 export async function httpTrigger(
   context: Context,
   req: HttpRequest
 ): Promise<HttpResponse> {
   try {
-    const validationErrors = await validateBody(req, LocalLoginDto)
-    if (validationErrors) return validationErrors
+    const validation = await validateBody(req, LocalLoginDto)
+    if (validation.status === OperationRes.ERROR) return
+
+    const { body } = validation
 
     const userService = Container.get(UserService)
-    const logIn = await userService.localLogin(req.body)
+
+    const existingUser = await userService.getUserByLogin(req.body)
+    if (!existingUser) return ErrorMessages()[401].WRONG_LOGIN
+
+    const logIn = await userService.localLogin(body.password, existingUser)
 
     const responseBody: ResponseBodyDto = {
       data: logIn,
