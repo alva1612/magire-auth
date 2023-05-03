@@ -1,6 +1,5 @@
 import { Exclude } from "class-transformer"
 import { State } from "../../types/common-attributes.type"
-import { Jwt } from "jsonwebtoken"
 
 export class UserResponseDto {
   id: number
