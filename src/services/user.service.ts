@@ -1,21 +1,13 @@
 import { Inject, Service } from "typedi"
 import { NewUserDto } from "../dtos"
 import { UserRepository } from "../repos"
-import { hashPassword, isSameHashedString } from "../helpers/security.helper"
+import { hashPassword } from "../helpers/security.helper"
 import { LocalLoginDto } from "../../Login/local-login.dto"
-import { sign } from "jsonwebtoken"
-import { ConfigService } from "./config.service"
-import { ENV_KEY } from "../constants"
-import { plainToInstance } from "class-transformer"
-import { UserResponseDto } from "../dtos/response-safe"
-import { User } from "@prisma/client"
 
 @Service()
 export class UserService {
   @Inject()
   private readonly _userRepo: UserRepository
-  @Inject()
-  private readonly _configService: ConfigService
 
   async getUserByLogin(loginCredentials: LocalLoginDto) {
     const { loginKey } = loginCredentials
@@ -23,27 +15,6 @@ export class UserService {
     const email = loginKey
     const existingUser = await this._userRepo.getUserByFilter({ email })
     return existingUser
-  }
-
-  async localLogin(password: string, user: User) {
-    //first search user by id if exists and match passwords, return token and data
-
-    const compare = isSameHashedString(password, user.password)
-    //validate if compared
-    if (!compare) return
-
-    const responseUser = plainToInstance(UserResponseDto, user)
-
-    return {
-      ...responseUser,
-      token: sign(
-        { ...responseUser },
-        this._configService.get(ENV_KEY.JWT_SECRET),
-        {
-          expiresIn: this._configService.get(ENV_KEY.JWT_EXPIRES),
-        }
-      ),
-    }
   }
 
   async register(user: NewUserDto) {
