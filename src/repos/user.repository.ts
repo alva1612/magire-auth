@@ -11,7 +11,7 @@ export class UserRepository {
   }
 
   async getUserByFilter(filter: Partial<User>) {
-    const result = await prisma.user.findFirstOrThrow({ where: filter })
+    const result = await prisma.user.findFirst({ where: filter })
     return result
   }
 

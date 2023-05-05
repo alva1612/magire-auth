@@ -8,6 +8,7 @@ import { UserService } from "../src/services"
 import { ResponseBodyDto } from "../src/dtos/response-body.dto"
 import { OperationRes } from "../src/types/common-types.type"
 import { AuthService } from "../src/services/auth.service"
+import { isSameHashedString } from "../src/helpers/security.helper"
 
 export async function httpTrigger(
   context: Context,
@@ -25,7 +26,10 @@ export async function httpTrigger(
     const existingUser = await userService.getUserByLogin(req.body)
     if (!existingUser) return ErrorMessages()[401].WRONG_LOGIN
 
-    const logIn = await authService.localLogin(body.password, existingUser)
+    const compare = isSameHashedString(body.password, existingUser.password)
+    if (!compare) return ErrorMessages()[401].WRONG_LOGIN
+
+    const logIn = await authService.localLogin(existingUser)
 
     const responseBody: ResponseBodyDto = {
       data: logIn,

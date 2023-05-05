@@ -1,7 +1,6 @@
 import { Service } from "typedi"
 import { ConfigService } from "./config.service"
 import { User } from "@prisma/client"
-import { isSameHashedString } from "../helpers/security.helper"
 import { ENV_KEY } from "../constants"
 import { plainToInstance } from "class-transformer"
 import { UserResponseDto } from "../dtos/response-safe"
@@ -18,10 +17,7 @@ export class AuthService {
     this.JWT_EXPIRES = this._configService.get(ENV_KEY.JWT_EXPIRES)
   }
 
-  async localLogin(password: string, user: User) {
-    const compare = isSameHashedString(password, user.password)
-    if (!compare) return
-
+  async localLogin(user: User) {
     const responseUser = plainToInstance(UserResponseDto, user)
     const token = this.signToken(responseUser)
 
