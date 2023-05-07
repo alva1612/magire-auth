@@ -16,7 +16,8 @@ export async function httpTrigger(
 ): Promise<HttpResponse> {
   try {
     const validation = await validateBody(req, LocalLoginDto)
-    if (validation.status === OperationRes.ERROR) return
+    if (validation.status === OperationRes.ERROR)
+      return ErrorMessages()[400].WRONG_BODY
 
     const { body } = validation
 
