@@ -12,7 +12,7 @@ export async function validateBody<T extends object>(
   if (!body)
     return {
       status: OperationRes.ERROR,
-      errors: ErrorMessages()[400].MISSING_BODY,
+      message: ErrorMessages[400].MISSING_BODY,
     }
 
   const bodyToDto = plainToClass(dtoClass, body)
@@ -21,7 +21,8 @@ export async function validateBody<T extends object>(
   if (errors && errors.length)
     return {
       status: OperationRes.ERROR,
-      errors: ErrorMessages(errors)[400].WRONG_BODY,
+      message: ErrorMessages[400].WRONG_BODY,
+      errors,
     }
 
   return { status: OperationRes.SUCCESS, body: bodyToDto }

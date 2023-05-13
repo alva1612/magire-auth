@@ -7,13 +7,14 @@ import { sign } from "jsonwebtoken"
 import { LoginResponseDto } from "../dtos/response-safe/user-response.dto"
 import { IAuthService } from "./auth.interface"
 import { IConfigService } from "./config.interface"
+import { ConfigService } from "./config.service"
 
 @Service()
 export class AuthService implements IAuthService {
   private readonly JWT_SECRET
   private readonly JWT_EXPIRES
 
-  constructor(private readonly _configService: IConfigService) {
+  constructor(private readonly _configService: ConfigService) {
     this.JWT_SECRET = this._configService.get(ENV_KEY.JWT_SECRET)
     this.JWT_EXPIRES = this._configService.get(ENV_KEY.JWT_EXPIRES)
   }

@@ -1,36 +1,16 @@
-export const ErrorMessages = (errors?) /*: ErrorCode */ => ({
+export const ErrorMessages = {
   400: {
-    MISSING_BODY: {
-      status: 400,
-      body: {
-        message: "No body sent",
-      },
-    },
-    WRONG_BODY: {
-      status: 400,
-      body: {
-        message: "Wrong Body",
-        errors: errors,
-      },
-    },
+    MISSING_BODY: "No body sent",
+    WRONG_BODY: "Wrong Body",
   },
   401: {
-    WRONG_LOGIN: {
-      status: 401,
-      body: {
-        message: "Wrong Log In credentials",
-      },
-    },
+    WRONG_LOGIN: "Wrong Log In credentials",
   },
   500: {
-    UNKNOWN: {
-      status: 500,
-      body: {
-        message: "Something went wrong",
-      },
-    },
+    UNKNOWN: "Something went wrong",
+    DB_ERROR: "Database error",
   },
-})
+}
 
 // type ErrorCode = {
 //   [code: number]: ErrorType

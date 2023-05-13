@@ -5,10 +5,11 @@ import { LocalLoginDto } from "./local-login.dto"
 import { ErrorMessages } from "../src/constants/error-messages.constant"
 import { validateBody } from "../src/helpers"
 import { UserService } from "../src/services"
-import { ResponseBodyDto } from "../src/dtos/response-body.dto"
 import { OperationRes } from "../src/types/common-types.type"
 import { AuthService } from "../src/services/auth.service"
 import { isSameHashedString } from "../src/helpers/security.helper"
+import { ResponseBody } from "../src/interfaces/trigger-res.interface"
+import { LoginResponseDto } from "../src/dtos/response-safe/user-response.dto"
 
 export async function httpTrigger(
   context: Context,
@@ -32,7 +33,8 @@ export async function httpTrigger(
 
     const logIn = await authService.localLogin(existingUser)
 
-    const responseBody: ResponseBodyDto = {
+    const responseBody: ResponseBody<LoginResponseDto> = {
+      type: "single",
       data: logIn,
     }
 

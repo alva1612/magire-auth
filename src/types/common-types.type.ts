@@ -4,7 +4,8 @@ export type StringValues<T> = {
 
 interface BodyError {
   status: OperationRes.ERROR
-  errors: unknown
+  message: string
+  errors?: unknown
 }
 
 interface Body<T> {
