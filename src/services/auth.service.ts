@@ -1,18 +1,19 @@
 import { Service } from "typedi"
-import { ConfigService } from "./config.service"
 import { User } from "@prisma/client"
 import { ENV_KEY } from "../constants"
 import { plainToInstance } from "class-transformer"
 import { UserResponseDto } from "../dtos/response-safe"
 import { sign } from "jsonwebtoken"
 import { LoginResponseDto } from "../dtos/response-safe/user-response.dto"
+import { IAuthService } from "./auth.interface"
+import { IConfigService } from "./config.interface"
 
 @Service()
-export class AuthService {
+export class AuthService implements IAuthService {
   private readonly JWT_SECRET
   private readonly JWT_EXPIRES
 
-  constructor(private readonly _configService: ConfigService) {
+  constructor(private readonly _configService: IConfigService) {
     this.JWT_SECRET = this._configService.get(ENV_KEY.JWT_SECRET)
     this.JWT_EXPIRES = this._configService.get(ENV_KEY.JWT_EXPIRES)
   }

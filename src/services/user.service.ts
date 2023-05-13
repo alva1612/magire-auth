@@ -3,9 +3,10 @@ import { NewUserDto } from "../dtos"
 import { UserRepository } from "../repos"
 import { hashPassword } from "../helpers/security.helper"
 import { LocalLoginDto } from "../../Login/local-login.dto"
+import { IUserService } from "./user.interface"
 
 @Service()
-export class UserService {
+export class UserService implements IUserService {
   @Inject()
   private readonly _userRepo: UserRepository
 
