@@ -1,24 +1,29 @@
-import { Context, HttpRequest, HttpResponse } from "@azure/functions"
+import { HttpRequest } from "@azure/functions"
 import "reflect-metadata"
 import Container from "typedi"
 import { LocalLoginDto } from "./local-login.dto"
-import { ErrorMessages } from "../src/constants/error-messages.constant"
+import { ErrMessage } from "../src/constants/error-messages.constant"
 import { validateBody } from "../src/helpers"
 import { UserService } from "../src/services"
 import { OperationRes } from "../src/types/common-types.type"
 import { AuthService } from "../src/services/auth.service"
 import { isSameHashedString } from "../src/helpers/security.helper"
-import { ResponseBody } from "../src/interfaces/trigger-res.interface"
+import { TriggerResponse } from "../src/interfaces/trigger-res.interface"
 import { LoginResponseDto } from "../src/dtos/response-safe/user-response.dto"
+import { badImplementation, badRequest, unauthorized } from "@hapi/boom"
+import { ExceptionBuilder } from "../src/utils/exception.builder"
 
 export async function httpTrigger(
-  context: Context,
   req: HttpRequest
-): Promise<HttpResponse> {
+): Promise<TriggerResponse<LoginResponseDto>> {
   try {
     const validation = await validateBody(req, LocalLoginDto)
     if (validation.status === OperationRes.ERROR)
-      return ErrorMessages()[400].WRONG_BODY
+      return ExceptionBuilder(
+        400,
+        ErrMessage[400].WRONG_BODY,
+        validation.errors
+      )
 
     const { body } = validation
 
@@ -26,23 +31,22 @@ export async function httpTrigger(
     const authService = Container.get(AuthService)
 
     const existingUser = await userService.getUserByLogin(req.body)
-    if (!existingUser) return ErrorMessages()[401].WRONG_LOGIN
+    if (!existingUser) return ExceptionBuilder(401, ErrMessage[401].CREDS)
 
     const compare = isSameHashedString(body.password, existingUser.password)
-    if (!compare) return ErrorMessages()[401].WRONG_LOGIN
+    if (!compare) return ExceptionBuilder(401, ErrMessage[401].CREDS)
 
     const logIn = await authService.localLogin(existingUser)
 
-    const responseBody: ResponseBody<LoginResponseDto> = {
-      type: "single",
-      data: logIn,
-    }
-
     return {
-      body: responseBody,
+      status: 200,
+      body: {
+        type: "single",
+        data: logIn,
+      },
     }
   } catch (error) {
     console.log(error)
-    return ErrorMessages()[500].UNKNOWN
+    return ExceptionBuilder(500, ErrMessage[500].UNKNOWN)
   }
 }

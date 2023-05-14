@@ -1,7 +1,7 @@
 import { HttpRequest } from "@azure/functions"
 import { ClassConstructor, plainToClass } from "class-transformer"
 import { validate } from "class-validator"
-import { ErrorMessages } from "../constants/error-messages.constant"
+import { ErrMessage } from "../constants/error-messages.constant"
 import { OperationRes, ValidatedBody } from "../types/common-types.type"
 
 export async function validateBody<T extends object>(
@@ -12,7 +12,7 @@ export async function validateBody<T extends object>(
   if (!body)
     return {
       status: OperationRes.ERROR,
-      message: ErrorMessages[400].MISSING_BODY,
+      message: ErrMessage[400].MISSING_BODY,
     }
 
   const bodyToDto = plainToClass(dtoClass, body)
@@ -21,7 +21,7 @@ export async function validateBody<T extends object>(
   if (errors && errors.length)
     return {
       status: OperationRes.ERROR,
-      message: ErrorMessages[400].WRONG_BODY,
+      message: ErrMessage[400].WRONG_BODY,
       errors,
     }
 

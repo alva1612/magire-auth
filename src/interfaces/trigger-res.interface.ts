@@ -1,5 +1,3 @@
-import { HttpResponse } from "@azure/functions"
-
 export interface ResponseBodySingle<T> {
   type: "single"
   data: T
@@ -12,7 +10,7 @@ export interface ResponseBodyList<T> {
 
 export interface ErrorBody {
   type: "error"
-  data: any
+  error: any
 }
 
 export type ResponseBody<T> =
